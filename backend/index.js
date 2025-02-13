@@ -6,7 +6,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import ImageKit from "imagekit";
 import Chat from "./models/chat.js";
-import userchats from "./models/userchats.js";
+import userchats from "./models/userChats.js";
 import { requireAuth } from '@clerk/express';
 
 dotenv.config();

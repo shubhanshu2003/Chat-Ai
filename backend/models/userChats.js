@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userChatsSchema = new mongoose.Schema(
+const userchats = new mongoose.Schema(
   {
     userId: {
       type: String,
@@ -27,4 +27,4 @@ const userChatsSchema = new mongoose.Schema(
 );
 
 export default mongoose.models.userchats ||
-  mongoose.model("userchats", userChatsSchema);
+  mongoose.model("userchats", userchats);
