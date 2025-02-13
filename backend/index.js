@@ -6,9 +6,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import ImageKit from "imagekit";
 import Chat from "./models/chat.js";
-import UserChats from "./models/userchats.js";
-import { requireAuth } from '@clerk/express'
-
+import userchats from "./models/userchats.js";
+import { requireAuth } from '@clerk/express';
 
 dotenv.config();
 
@@ -62,11 +61,11 @@ app.post("/api/chats", requireAuth(), async (req, res) => {
     const savedChat = await newChat.save();
 
     // CHECK IF THE USERCHATS EXISTS
-    const userChats = await UserChats.find({ userId: userId });
+    const userChats = await userchats.find({ userId: userId });
 
     // IF DOESN'T EXIST CREATE A NEW ONE AND ADD THE CHAT IN THE CHATS ARRAY
     if (!userChats.length) {
-      const newUserChats = new UserChats({
+      const newUserChats = new userchats({
         userId: userId,
         chats: [
           {
@@ -79,7 +78,7 @@ app.post("/api/chats", requireAuth(), async (req, res) => {
       await newUserChats.save();
     } else {
       // IF EXISTS, PUSH THE CHAT TO THE EXISTING ARRAY
-      await UserChats.updateOne(
+      await userchats.updateOne(
         { userId: userId },
         {
           $push: {
@@ -103,7 +102,7 @@ app.get("/api/userchats", requireAuth(), async (req, res) => {
   const userId = req.auth.userId;
 
   try {
-    const userChats = await UserChats.find({ userId });
+    const userChats = await userchats.find({ userId });
 
     res.status(200).send(userChats[0].chats);
   } catch (err) {
@@ -169,5 +168,5 @@ app.get("*", (req, res) => {
 
 app.listen(port, () => {
   connect();
-  console.log("Server running on 3000");
+  console.log(`Server running on ${port} `);
 });
